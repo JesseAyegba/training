@@ -5,7 +5,7 @@ import numpy as np
 import random
 import math
 import sys
-
+import matplotlib.pyplot as plt
 # helper functions
 
 def loadFile(df):
@@ -193,6 +193,12 @@ class NeuralNetwork:
     numTrainItems = len(trainData)
     indices = np.arange(numTrainItems)  # [0, 1, 2, . . n-1]  # rnd.shuffle(v)
 
+  # /////////////////////////////////////////////////////////////////////////////////////////
+    epochHolder = []
+    errorHolder = []
+  # /////////////////////////////////////////////////////////////////////////////////////////
+
+
     while epoch < maxEpochs:
       self.rnd.shuffle(indices)  # scramble order of training items
       for ii in range(numTrainItems):
@@ -263,10 +269,27 @@ class NeuralNetwork:
 	  
       if epoch % 10 == 0:
         mse = self.meanSquaredError(trainData)
+
         print("epoch = " + str(epoch) + " ms error = %0.4f " % mse)
+
+        # ///////////////////////////////////////////////////////////////////////////
+        epochHolder.append(epoch)
+        errorHolder.append(mse)
+        # //////////////////////////////////////////////////////////////////////////
     # end while
     
     result = self.getWeights()
+
+    # ////////////////////////////////////////////////////////////////////////
+    # plt.plot(epochHolder, errorHolder, label='Error vs Epoch')
+    plt.plot(errorHolder, epochHolder, label='Epoch vs Error')
+    # Add a legend
+    plt.legend()
+
+    # Show the plot
+    plt.show()
+    # //////////////////////////////////////////////////////////////////////////
+
     return result
   # end train
   
